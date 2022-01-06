@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody2D rb;
     private Vector2 localScale;
+    private float startLocalScaleX;
     private bool isGrounded = true;
     private bool isJumping = false;
     private bool isJumpingCheck = true;
@@ -16,14 +17,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float testY = 0.55f;
     public GUIStyle textStyle;
 
-
     InputManager inputManager;
     PlayerManager playerManager;
+    AnimParamController animParamController;
 
     void Awake()
     {
+        startLocalScaleX = transform.localScale.x;
         localScale = transform.localScale;
         jumpTimeCounter = jumpTime;
+        animParamController = GetComponent<AnimParamController>();
     }
 
     void Start()
@@ -41,6 +44,9 @@ public class PlayerController : MonoBehaviour
     {
         isGrounded = Physics2D.Linecast(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, platformLayer);
         Debug.DrawLine(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, Color.red, 0, false);
+
+        // アニメーターのパラメーターセット
+        animParamController.SetAnimParamBool("Jumping", !isGrounded);
     }
 
     void FixedUpdate()
@@ -48,13 +54,21 @@ public class PlayerController : MonoBehaviour
         if (inputManager.MoveKey != 0)
         {
             // 向きを変える
-            localScale.x = inputManager.MoveKey * localScale.x;
+            localScale.x = inputManager.MoveKey * startLocalScaleX;
             transform.localScale = localScale;
+
+            // アニメーターのパラメーターセット
+            animParamController.SetAnimParamBool("Move", true);
+        }
+        else
+        {
+            // アニメーターのパラメーターセット
+            animParamController.SetAnimParamBool("Move", false);
         }
 
         if (isGrounded)
         {
-            rb.velocity = new Vector2(inputManager.MoveKey * playerManager.MoveSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.MoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)), rb.velocity.y);
 
             if (isJumpingCheck && inputManager.JumpKey != 0)
             {
@@ -68,11 +82,12 @@ public class PlayerController : MonoBehaviour
         {
             if (inputManager.JumpKey == 0)
             {
-                isJumping = false;
+                //isJumping = false;
             }
+
             if (!isJumping)
             {
-                rb.velocity = new Vector2(inputManager.MoveKey * playerManager.JumpMoveSpeed, Physics.gravity.y * playerManager.GravityRate);
+                rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)), Physics.gravity.y * playerManager.GravityRate);
             }
         }
 
@@ -80,11 +95,9 @@ public class PlayerController : MonoBehaviour
         {
             jumpTimeCounter -= Time.deltaTime;
 
-            if (inputManager.JumpKey == 2)
-            {
-                _jumpPower -= 0.2f;
-                rb.velocity = new Vector2(inputManager.MoveKey * playerManager.JumpMoveSpeed, 1 * _jumpPower);
-            }
+            _jumpPower -= 0.6f;
+            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)), 1 * _jumpPower);
+
             if (jumpTimeCounter < 0)
             {
                 isJumping = false;
