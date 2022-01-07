@@ -35,11 +35,6 @@ public class PlayerController : MonoBehaviour
         inputManager = InputManager.Instance;
     }
 
-    private void OnGUI()
-    {
-        GUI.Label(new Rect(50, 50, 50, 50), "isGrounded" + isGrounded, textStyle);
-    }
-
     void Update()
     {
         isGrounded = Physics2D.Linecast(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, platformLayer);
@@ -108,5 +103,7 @@ public class PlayerController : MonoBehaviour
         {
             isJumpingCheck = true;
         }
+
+        
     }
 }

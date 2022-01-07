@@ -10,26 +10,82 @@ public class PlayerShoot : MonoBehaviour
     // ロックマンの弾発射位置
     [SerializeField] private Transform _muzzlePos;
 
+    // ロックオンカーソル
+    [SerializeField] private LockonCursor _lockonCursor;
+
     // ファイアレート
     [SerializeField] private float _fireRate = 0.2f;
 
     private float nextFireWaitTime;
-    AnimParamController animParamController;
+    private WithinCameraLangeEnemyManager cameraLangeEnemyManager;
+    private AnimParamController animParamController;
+    private Enemy targetingEnemy;
+    private float startLocalScaleX;
 
     private void Awake()
     {
         animParamController = GetComponent<AnimParamController>();
+        startLocalScaleX = transform.localScale.x;
+    }
+
+    private void Start()
+    {
+        cameraLangeEnemyManager = WithinCameraLangeEnemyManager.Instance;
+        if(_lockonCursor == null)
+        {
+            _lockonCursor = FindObjectOfType<LockonCursor>();
+        }
     }
 
     void Update()
     {
-        if(InputManager.Instance.FireKey == 1 && nextFireWaitTime <= 0)
+        targetingEnemy = WithinCameraLangeEnemyManager.Instance.GetNearestEnemy(transform.position);
+
+        if (targetingEnemy != null)
         {
-            var obj = Instantiate(_bulletPrefab, _muzzlePos.position, Quaternion.identity) as GameObject;
-            var bulletSc = obj.GetComponent<Bullet>();
-            bulletSc.ShotBullet(5f, transform.right);
+            _lockonCursor.SetImageEnabled(true, targetingEnemy.transform);
+
+        }
+        else
+        {
+            _lockonCursor.SetImageEnabled(false, null);
+
+        }
+
+        if (InputManager.Instance.FireKey != 0 && nextFireWaitTime <= 0)
+        {
+            GameObject obj = Instantiate(_bulletPrefab, _muzzlePos.position, Quaternion.identity) as GameObject;
+            Bullet bulletSc = obj.GetComponent<Bullet>();
+            Vector3 vec = transform.right * transform.localScale.x;
+
+            if (targetingEnemy != null)
+            {
+                vec = (targetingEnemy.transform.position - transform.position).normalized;
+            }
+
+            bulletSc.ShotBullet(7f, vec);
             nextFireWaitTime += _fireRate;
             animParamController.SetAnimParamBool("Shooting", true);
+        }
+
+        
+    }
+
+    private void LateUpdate()
+    {
+        // 狙ってる敵がいるかつ射撃モーション中
+        if (targetingEnemy != null && _fireRate - 0.05f < nextFireWaitTime && nextFireWaitTime <= _fireRate)
+        {
+            // 狙ってる敵が自分より右側のとき
+            if (transform.position.x <= targetingEnemy.transform.position.x)
+            {
+                transform.localScale = new Vector3( startLocalScaleX, transform.localScale.y, transform.localScale.z);
+            }
+            // 自分より左側のとき
+            else
+            {
+                transform.localScale = new Vector3( -startLocalScaleX, transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 
