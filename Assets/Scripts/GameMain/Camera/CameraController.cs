@@ -7,7 +7,15 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform _playerTransform;
 
     private Camera myCamera;
-    private Vector3 playerScreenPos;
+    public Camera Camera {
+        get { return myCamera; }
+    }
+
+    private Vector3 playerViewPortPos;
+    public Vector3 PlayerViewPortPos {
+        get { return playerViewPortPos; }
+    }
+
     private Vector3 velocity;
 
     private void Awake()
@@ -29,23 +37,23 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        playerScreenPos = myCamera.WorldToViewportPoint(_playerTransform.position);
+        playerViewPortPos = myCamera.WorldToViewportPoint(_playerTransform.position);
         bool followFlag = false;
-        float followX = playerScreenPos.x;
-        float followY = playerScreenPos.y;
+        float followX = playerViewPortPos.x;
+        float followY = playerViewPortPos.y;
 
-        if(0.499f <= playerScreenPos.x)
+        if(0.499f <= playerViewPortPos.x)
         {
             followFlag = true;
             followX = 0.499f;
         }
 
-        if(0.67f <= playerScreenPos.y)
+        if(0.67f <= playerViewPortPos.y)
         {
             followFlag = true;
             followY = 0.67f;
         }
-        else if(playerScreenPos.y <= 0.23f)
+        else if(playerViewPortPos.y <= 0.23f)
         {
             followFlag = true;
             followY = 0.23f;
@@ -53,7 +61,7 @@ public class CameraController : MonoBehaviour
 
         if (followFlag)
         {
-            Vector3 delta = _playerTransform.position - myCamera.ViewportToWorldPoint(new Vector3(followX, followY, playerScreenPos.z));
+            Vector3 delta = _playerTransform.position - myCamera.ViewportToWorldPoint(new Vector3(followX, followY, playerViewPortPos.z));
             Vector3 destination = transform.position + delta;
 
             transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, 0.05f);

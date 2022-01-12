@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private enum ConflictType
+    {
+        None,
+        Damage
+    }
+
     [SerializeField] private int maxHP = 100;
     public int MaxHP {
         get { return maxHP; }
@@ -16,11 +22,16 @@ public class Enemy : MonoBehaviour
         set { hp = value; }
     }
 
+    [SerializeField] private ConflictType _conflictType = ConflictType.Damage;
+
+    [SerializeField] private int _conflictDamage = 5;
+
     private bool isEnteredLockonLange;
     private bool lastEnteredLockonLange;
 
     private WithinCameraLangeEnemyManager cameraLangeEnemyManager;
-    private Camera mainCamera;
+    protected Camera mainCamera;
+    protected bool updateFlag;
 
     virtual protected void Awake()
     {
@@ -38,6 +49,18 @@ public class Enemy : MonoBehaviour
 
     virtual protected void Update()
     {
+        updateFlag = true;
+
+        if (HP <= 0) updateFlag = false;
+
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
+        Rect enemyUpdateScreenLange = new Rect(-200, -200, Screen.width + 200, Screen.height + 200);
+
+        // 敵が画面範囲から遠ざかっていたら処理をスキップ
+        if (!enemyUpdateScreenLange.Contains(screenPos)) updateFlag = false;
+
+        if (!updateFlag) return;
+
         if (isEnteredLockonLange)
         {
             if (!lastEnteredLockonLange)
@@ -63,7 +86,9 @@ public class Enemy : MonoBehaviour
 
     private void OnWillRenderObject()
     {
-        if(cameraLangeEnemyManager == null)
+        if (HP <= 0) return;
+
+        if (cameraLangeEnemyManager == null)
         {
             cameraLangeEnemyManager = WithinCameraLangeEnemyManager.Instance;
         }
@@ -74,14 +99,51 @@ public class Enemy : MonoBehaviour
         }
 
         // カメラの描画範囲内に収まっていて、ロックオン範囲内にも収まっていたらフラグ立てる
-        Vector3 viewPortPos = mainCamera.WorldToViewportPoint(transform.position);
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
 
-        Debug.Log(gameObject.name + viewPortPos);
-
-        if (cameraLangeEnemyManager.LockonLangeRect.Contains(viewPortPos)){
+        if (cameraLangeEnemyManager.LockonLangeRect.Contains(screenPos)){
             isEnteredLockonLange = true;
         }
         
-        Debug.Log(gameObject.name + "が画面内にいる");
+    }
+
+    public void TakeDamage(int damage)
+    {
+        if (HP <= 0) return;
+
+        HP -= damage;
+
+        if (HP <= 0)
+        {
+            HP = 0;
+            cameraLangeEnemyManager._withinCameraLangeEnemies.Remove(this);
+            Destroy(gameObject);
+        }
+
+    }
+
+    virtual protected void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            if(_conflictType == ConflictType.Damage)
+            {
+                PlayerHealth playerHealth = collision.gameObject.GetComponent<PlayerHealth>();
+
+                playerHealth.TakeDamage(_conflictDamage);
+            }
+        }
+    }
+
+    virtual protected void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("当たった");
+        if (collision.CompareTag("Bullet"))
+        {
+            // プレイヤーの弾と衝突
+            Bullet bullet = collision.gameObject.GetComponent<Bullet>();
+
+            TakeDamage(bullet.Damage);
+        }
     }
 }

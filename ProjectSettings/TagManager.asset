@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - EnemyBullet
+  - Ground
+  - RidableEnemy
   layers:
   - Default
   - TransparentFX
@@ -17,8 +20,8 @@ TagManager:
   - Bullet
   - Player
   - Enemy
-  - 
-  - 
+  - RidableEnemy
+  - EnemyBullet
   - 
   - 
   - 
