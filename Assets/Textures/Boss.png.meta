@@ -1,0 +1,666 @@
+fileFormatVersion: 2
+guid: 65ae333cc5c29cd4e876b6f568cf6a0b
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1359847689055500253
+    second: dokurobotto_0
+  - first:
+      213: 3355665957129070601
+    second: dokurobotto_1
+  - first:
+      213: 4749989011158563632
+    second: dokurobotto_2
+  - first:
+      213: 1006924554792135551
+    second: dokurobotto_3
+  - first:
+      213: 100315834012109729
+    second: dokurobotto_4
+  - first:
+      213: 1149036212560397386
+    second: dokurobotto_5
+  - first:
+      213: 1507929705265002539
+    second: dokurobotto_6
+  - first:
+      213: -5109019828434169501
+    second: dokurobotto_7
+  - first:
+      213: -8772919582117540299
+    second: dokurobotto_8
+  - first:
+      213: -658992161098935491
+    second: dokurobotto_9
+  - first:
+      213: -2147776382948964098
+    second: dokurobotto_10
+  - first:
+      213: 79652865200296348
+    second: dokurobotto_11
+  - first:
+      213: -6434617234609462755
+    second: dokurobotto_12
+  - first:
+      213: 6467237670224234112
+    second: dokurobotto_13
+  - first:
+      213: -1141437237751247735
+    second: dokurobotto_14
+  - first:
+      213: -7252763488235536007
+    second: dokurobotto_15
+  - first:
+      213: -2965350551278896276
+    second: dokurobotto_16
+  - first:
+      213: -7969009176645709072
+    second: dokurobotto_17
+  - first:
+      213: 7976204504638504623
+    second: dokurobotto_18
+  - first:
+      213: 2135468660711054966
+    second: dokurobotto_19
+  - first:
+      213: 612467927435536370
+    second: dokurobotto_20
+  - first:
+      213: -7111786376300320555
+    second: dokurobotto_21
+  - first:
+      213: -1700869142884776141
+    second: dokurobotto_22
+  - first:
+      213: -6098216946190241099
+    second: dokurobotto_23
+  - first:
+      213: 5651591714269031345
+    second: dokurobotto_24
+  - first:
+      213: -6118746297755488743
+    second: dokurobotto_25
+  - first:
+      213: 8099675234516441407
+    second: dokurobotto_26
+  - first:
+      213: -7547370582208534288
+    second: dokurobotto_27
+  - first:
+      213: 1714421258900038456
+    second: dokurobotto_28
+  - first:
+      213: -2385786092836779168
+    second: dokurobotto_29
+  - first:
+      213: 960579126260487001
+    second: dokurobotto_30
+  - first:
+      213: -3424399257007043357
+    second: dokurobotto_31
+  - first:
+      213: 3539181847465053730
+    second: dokurobotto_32
+  - first:
+      213: -1874518662710683436
+    second: dokurobotto_33
+  - first:
+      213: -8112619176372141033
+    second: dokurobotto_34
+  - first:
+      213: 7659306410303238939
+    second: dokurobotto_35
+  - first:
+      213: 7181875543369036107
+    second: dokurobotto_36
+  - first:
+      213: 1908279521421505344
+    second: dokurobotto_37
+  - first:
+      213: 4425987777895368594
+    second: dokurobotto_38
+  - first:
+      213: 1063209816100436819
+    second: dokurobotto_39
+  - first:
+      213: -6611979795443835032
+    second: dokurobotto_40
+  - first:
+      213: 3841823628225567622
+    second: dokurobotto_41
+  - first:
+      213: -1285915183800743710
+    second: dokurobotto_42
+  - first:
+      213: -1382439338176245887
+    second: dokurobotto_43
+  - first:
+      213: 3847821350992989046
+    second: dokurobotto_44
+  - first:
+      213: -1099059534645449948
+    second: dokurobotto_45
+  - first:
+      213: 4435696950509156084
+    second: dokurobotto_46
+  - first:
+      213: -3844140249673493142
+    second: dokurobotto_47
+  - first:
+      213: -8738119657442266424
+    second: dokurobotto_48
+  - first:
+      213: 330907967285616045
+    second: dokurobotto_49
+  - first:
+      213: -5424073739130414500
+    second: dokurobotto_50
+  - first:
+      213: -8723635795452513037
+    second: dokurobotto_51
+  - first:
+      213: 4617872060460183053
+    second: dokurobotto_52
+  - first:
+      213: 8674899615340900420
+    second: dokurobotto_53
+  - first:
+      213: 5667903751063327784
+    second: dokurobotto_54
+  - first:
+      213: -7406163369264079609
+    second: dokurobotto_55
+  - first:
+      213: 8863453488249012935
+    second: dokurobotto_56
+  - first:
+      213: 7074875214560621878
+    second: dokurobotto_57
+  - first:
+      213: -7128969128975142310
+    second: dokurobotto_58
+  - first:
+      213: -2144580383637228434
+    second: dokurobotto_59
+  - first:
+      213: 6611414192267327584
+    second: dokurobotto_60
+  - first:
+      213: -4799526099018486360
+    second: dokurobotto_61
+  - first:
+      213: 4444592448962158757
+    second: dokurobotto_62
+  - first:
+      213: -1957708666508187295
+    second: dokurobotto_63
+  - first:
+      213: -6806373340231346959
+    second: dokurobotto_64
+  - first:
+      213: 2435919915497987719
+    second: dokurobotto_65
+  - first:
+      213: 7926027320023799980
+    second: dokurobotto_66
+  - first:
+      213: 5301336082373354252
+    second: dokurobotto_67
+  - first:
+      213: 5208714862958306265
+    second: dokurobotto_68
+  - first:
+      213: 1211384371177721668
+    second: dokurobotto_69
+  - first:
+      213: -5626421968299332895
+    second: dokurobotto_70
+  - first:
+      213: 2888020664476483669
+    second: dokurobotto_71
+  - first:
+      213: -7785193377427104946
+    second: dokurobotto_72
+  - first:
+      213: -6586039805119369751
+    second: dokurobotto_73
+  - first:
+      213: -3880606798989583372
+    second: dokurobotto_74
+  - first:
+      213: -387135852015928092
+    second: dokurobotto_75
+  - first:
+      213: 814532051700467073
+    second: dokurobotto_76
+  - first:
+      213: 3438299306023365238
+    second: dokurobotto_77
+  - first:
+      213: -5799141269375449800
+    second: dokurobotto_78
+  - first:
+      213: -6704280982022949569
+    second: dokurobotto_79
+  - first:
+      213: -343050198637168995
+    second: dokurobotto_80
+  - first:
+      213: 129749514266207814
+    second: dokurobotto_81
+  - first:
+      213: -7693228870435906321
+    second: dokurobotto_82
+  - first:
+      213: 2010525916331964335
+    second: dokurobotto_83
+  - first:
+      213: -5368054534229422323
+    second: dokurobotto_84
+  - first:
+      213: -7603117154874059439
+    second: dokurobotto_85
+  - first:
+      213: 4932517714551876971
+    second: dokurobotto_86
+  - first:
+      213: -6932699994478830947
+    second: dokurobotto_87
+  - first:
+      213: -179605483358219716
+    second: dokurobotto_88
+  - first:
+      213: -817105701880176633
+    second: dokurobotto_89
+  - first:
+      213: 1560494546921457085
+    second: dokurobotto_90
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: dokurobotto_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32806394bb9d02de0800000000000000
+      internalID: -1359847689055500253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_1
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 908ac8fa868b19e20800000000000000
+      internalID: 3355665957129070601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_2
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03b7d11d6d95be140800000000000000
+      internalID: 4749989011158563632
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_3
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 324
+        width: 37
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7be0043c8059fd00800000000000000
+      internalID: 1006924554792135551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_4
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1ab83a338b4646100800000000000000
+      internalID: 100315834012109729
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_5
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4409b3f85232ff00800000000000000
+      internalID: 1149036212560397386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_6
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 324
+        width: 40
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b28749cd31e3de410800000000000000
+      internalID: 1507929705265002539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_7
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 324
+        width: 37
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36111c7e88d1919b0800000000000000
+      internalID: -5109019828434169501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_8
+      rect:
+        serializedVersion: 2
+        x: 306
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53ec0d8fe14504680800000000000000
+      internalID: -8772919582117540299
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_9
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d335ee7fe1acad6f0800000000000000
+      internalID: -658992161098935491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_10
+      rect:
+        serializedVersion: 2
+        x: 385
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ef88a5552c09132e0800000000000000
+      internalID: -2147776382948964098
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_11
+      rect:
+        serializedVersion: 2
+        x: 422
+        y: 324
+        width: 36
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c911b9fdbdbfa1100800000000000000
+      internalID: 79652865200296348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dokurobotto_12
+      rect:
+        serializedVersion: 2
+        x: 460
+        y: 324
+        width: 37
+        height: 53
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d122f7997b5a3b6a0800000000000000
+      internalID: -6434617234609462755
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

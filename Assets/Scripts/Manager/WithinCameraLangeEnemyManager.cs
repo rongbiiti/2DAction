@@ -21,8 +21,6 @@ public class WithinCameraLangeEnemyManager : SingletonMonoBehaviour<WithinCamera
 
     private Rect screen;
 
-    public Texture BoxTexture;
-
     protected override void Awake()
     {
         base.Awake();

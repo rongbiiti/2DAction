@@ -11,7 +11,6 @@ public class AnimParamController : MonoBehaviour
         {
             _myAnimator = GetComponent<Animator>();
         }
-        
     }
 
     // パラメーターの名前を指定して代入
@@ -26,5 +25,13 @@ public class AnimParamController : MonoBehaviour
         _myAnimator.SetBool(id, value);
     }
 
-    
+    public void SetAnimParamTrigger(string paramName)
+    {
+        _myAnimator.SetTrigger(paramName);
+    }
+
+    public void SetAnimParamTrigger(int id)
+    {
+        _myAnimator.SetTrigger(id);
+    }
 }

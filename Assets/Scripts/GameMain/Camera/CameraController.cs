@@ -17,6 +17,7 @@ public class CameraController : MonoBehaviour
     }
 
     private Vector3 velocity;
+    private PlayerController _playerController;
 
     private void Awake()
     {
@@ -32,6 +33,7 @@ public class CameraController : MonoBehaviour
             _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
+        _playerController = _playerTransform.GetComponent<PlayerController>();
         myCamera = GetComponent<Camera>();
     }
 
@@ -53,7 +55,7 @@ public class CameraController : MonoBehaviour
             followFlag = true;
             followY = 0.67f;
         }
-        else if(playerViewPortPos.y <= 0.23f)
+        else if(playerViewPortPos.y <= 0.23f && !_playerController.IsFalling)
         {
             followFlag = true;
             followY = 0.23f;

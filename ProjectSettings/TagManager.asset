@@ -9,6 +9,11 @@ TagManager:
   - EnemyBullet
   - Ground
   - RidableEnemy
+  - Gimmick
+  - Needle
+  - Lava
+  - FallZone
+  - RestartPoint
   layers:
   - Default
   - TransparentFX

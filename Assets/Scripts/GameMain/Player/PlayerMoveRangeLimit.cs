@@ -25,6 +25,11 @@ public class PlayerMoveRangeLimit : MonoBehaviour
             worldPos.y = transform.position.y;
             transform.position = worldPos;
         }
+
+        if(myViewPortPos.y <= -0.1f)
+        {
+            GetComponent<PlayerHealth>().TakeDamage(100);
+        }
     }
 
 }

@@ -25,6 +25,7 @@ public class LockonCursor : MonoBehaviour
         if (flag && !myImage.enabled)
         {
             myImage.enabled = true;
+            
         }
         else if(!flag && myImage.enabled)
         {
@@ -34,6 +35,7 @@ public class LockonCursor : MonoBehaviour
         if(targetEnemy != null)
         {
             lockonEnemy = targetEnemy;
+            transform.position = mainCamera.WorldToScreenPoint(lockonEnemy.transform.position);
         }
     }
 

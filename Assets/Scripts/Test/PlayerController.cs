@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float testY = 0.55f;
     public GUIStyle textStyle;
 
+    private bool isFalling;
+    public bool IsFalling {
+        get { return isFalling; }
+    }
+
     InputManager inputManager;
     PlayerManager playerManager;
     AnimParamController animParamController;
@@ -103,7 +108,14 @@ public class PlayerController : MonoBehaviour
         {
             isJumpingCheck = true;
         }
-
         
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("FallZone"))
+        {
+            isFalling = true;
+        }
     }
 }
