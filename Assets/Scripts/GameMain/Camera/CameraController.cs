@@ -19,6 +19,14 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity;
     private PlayerController _playerController;
 
+    private bool followFlag = true;
+    public bool FollowFlag {
+        get { return followFlag; }
+        set { followFlag = value; }
+    }
+
+    private Vector3 bossBattleCameraPos = new Vector3(180f, -39.85f, -20f);
+
     private void Awake()
     {
         Application.targetFrameRate = 60;
@@ -37,8 +45,28 @@ public class CameraController : MonoBehaviour
         myCamera = GetComponent<Camera>();
     }
 
+    public void SetCameraPosToBossBattle()
+    {
+        StartCoroutine(nameof(MoveToBossBattleCameraPos));
+    }
+
+    private IEnumerator MoveToBossBattleCameraPos()
+    {
+        float waitTime = 0;
+        Vector3 startPos = transform.position;
+        while(waitTime < 1f)
+        {
+            transform.position = Vector3.Lerp(startPos, bossBattleCameraPos, waitTime);
+            waitTime += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = bossBattleCameraPos;
+    }
+
     private void LateUpdate()
     {
+        if (!FollowFlag) return;
+
         playerViewPortPos = myCamera.WorldToViewportPoint(_playerTransform.position);
         bool followFlag = false;
         float followX = playerViewPortPos.x;

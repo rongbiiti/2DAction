@@ -133,6 +133,10 @@ public class Enemy : MonoBehaviour
                 playerHealth.TakeDamage(_conflictDamage);
             }
         }
+        else if (collision.gameObject.CompareTag("Lava"))
+        {
+            TakeDamage(maxHP);
+        }
     }
 
     virtual protected void OnTriggerEnter2D(Collider2D collision)
