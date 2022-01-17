@@ -3,6 +3,9 @@ using UnityEngine;
 public class AnimParamController : MonoBehaviour
 {
     [SerializeField] private Animator _myAnimator;
+    public Animator MyAnimator {
+        get { return _myAnimator; }
+    }
 
     private void Awake()
     {

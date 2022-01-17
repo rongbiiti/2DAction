@@ -19,13 +19,14 @@ public class CameraController : MonoBehaviour
     private Vector3 velocity;
     private PlayerController _playerController;
 
-    private bool followFlag = true;
-    public bool FollowFlag {
-        get { return followFlag; }
-        set { followFlag = value; }
+    private bool cameraMoveFlag = true;
+    public bool CameraMoveFlag {
+        get { return cameraMoveFlag; }
+        set { cameraMoveFlag = value; }
     }
 
-    private Vector3 bossBattleCameraPos = new Vector3(180f, -39.85f, -20f);
+    private Vector3 bossBattleCameraPos = new Vector3(180f, -39.85f, -10f);
+    private Vector3 bossRoomEntrancePos = new Vector3(168.78f, -39.85f, -10f);
 
     private void Awake()
     {
@@ -50,14 +51,28 @@ public class CameraController : MonoBehaviour
         StartCoroutine(nameof(MoveToBossBattleCameraPos));
     }
 
+    // 指定位置にカメラ強制的に移動
+    private IEnumerator ForceCameraPosMove(Vector3 pos, float duration)
+    {
+        float waitTime = 0;
+        Vector3 startPos = transform.position;
+        while (waitTime < duration)
+        {
+            transform.position = Vector3.Lerp(startPos, pos, waitTime / duration);
+            waitTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        transform.position = bossBattleCameraPos;
+    }
+
     private IEnumerator MoveToBossBattleCameraPos()
     {
         float waitTime = 0;
         Vector3 startPos = transform.position;
-        while(waitTime < 1f)
+        while(waitTime < 1.5f)
         {
             transform.position = Vector3.Lerp(startPos, bossBattleCameraPos, waitTime);
-            waitTime += Time.deltaTime;
+            waitTime += Time.unscaledDeltaTime;
             yield return null;
         }
         transform.position = bossBattleCameraPos;
@@ -65,31 +80,36 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!FollowFlag) return;
+        if (!CameraMoveFlag) return;
+
+        if(bossRoomEntrancePos.x <= transform.position.x)
+        {
+            CameraMoveFlag = false;
+        }
 
         playerViewPortPos = myCamera.WorldToViewportPoint(_playerTransform.position);
-        bool followFlag = false;
+        bool playerMoveFollowFlag = false;
         float followX = playerViewPortPos.x;
         float followY = playerViewPortPos.y;
 
         if(0.499f <= playerViewPortPos.x)
         {
-            followFlag = true;
+            playerMoveFollowFlag = true;
             followX = 0.499f;
         }
 
         if(0.67f <= playerViewPortPos.y)
         {
-            followFlag = true;
+            playerMoveFollowFlag = true;
             followY = 0.67f;
         }
         else if(playerViewPortPos.y <= 0.23f && !_playerController.IsFalling)
         {
-            followFlag = true;
+            playerMoveFollowFlag = true;
             followY = 0.23f;
         }
 
-        if (followFlag)
+        if (playerMoveFollowFlag)
         {
             Vector3 delta = _playerTransform.position - myCamera.ViewportToWorldPoint(new Vector3(followX, followY, playerViewPortPos.z));
             Vector3 destination = transform.position + delta;

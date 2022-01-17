@@ -38,8 +38,8 @@ public class Enemy_Boss : Enemy
 
         DictInit();
 
-        FindObjectOfType<CameraController>().FollowFlag = false;
-        FindObjectOfType<CameraController>().SetCameraPosToBossBattle();
+        FindObjectOfType<CameraController>().CameraMoveFlag = false;
+        //FindObjectOfType<CameraController>().SetCameraPosToBossBattle();
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
 
         rb = GetComponent<Rigidbody2D>();

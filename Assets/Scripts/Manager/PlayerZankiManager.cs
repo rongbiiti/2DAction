@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PlayerZankiManager : SingletonMonoBehaviour<PlayerZankiManager>
 {
-    // 残機最大数
-    [SerializeField] private int _maxZanki = 99;
-
     // 初期残機
     [SerializeField] private int _startZanki = 3;
 

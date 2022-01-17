@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private float jumpTimeCounter;
     private float jumpTime = 0.35f;
     private float _jumpPower;
+    private float moveFlag = 1f;
     [SerializeField] private LayerMask platformLayer;
     [SerializeField] private float testY = 0.55f;
     public GUIStyle textStyle;
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.MoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)), rb.velocity.y);
+            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.MoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, rb.velocity.y);
 
             if (isJumpingCheck && inputManager.JumpKey != 0)
             {
@@ -87,7 +88,7 @@ public class PlayerController : MonoBehaviour
 
             if (!isJumping)
             {
-                rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)), Physics.gravity.y * playerManager.GravityRate);
+                rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, Physics.gravity.y * playerManager.GravityRate);
             }
         }
 
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour
             jumpTimeCounter -= Time.deltaTime;
 
             _jumpPower -= 0.6f;
-            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)), 1 * _jumpPower);
+            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, 1 * _jumpPower);
 
             if (jumpTimeCounter < 0)
             {
@@ -111,11 +112,57 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private IEnumerator EnterBossRoom(BoxCollider2D shutterCol, BossRoomShutter bossRoomShutter)
+    {
+        float waitTime = 0;
+        Vector3 startPos = transform.position;
+        Vector3 endPos = new Vector3(transform.position.x + 2.5f, transform.position.y, transform.position.z);
+
+        shutterCol.enabled = false;
+        moveFlag = 0f;
+        bossRoomShutter.ShutterOff();
+        inputManager.enabled = false;
+        Time.timeScale = 0f;
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        Time.timeScale = 1f;
+
+        FindObjectOfType<CameraController>().SetCameraPosToBossBattle();
+        while(waitTime < 1.5f)
+        {
+            transform.position = Vector3.Lerp(startPos, endPos, waitTime);
+            waitTime += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        Time.timeScale = 0f;
+
+        shutterCol.enabled = true;
+        transform.position = endPos;
+        bossRoomShutter.ShutterOn();
+
+        yield return new WaitForSecondsRealtime(1f);
+
+        Time.timeScale = 1f;
+        moveFlag = 1f;
+        inputManager.enabled = true;
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("FallZone"))
         {
             isFalling = true;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("BossRoomShutter"))
+        {
+            collision.gameObject.tag = "Untagged";
+            StartCoroutine(EnterBossRoom(collision.gameObject.GetComponent<BoxCollider2D>(), collision.gameObject.GetComponent<BossRoomShutter>()) );
         }
     }
 }
