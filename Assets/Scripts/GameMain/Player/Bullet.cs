@@ -9,13 +9,32 @@ public class Bullet : MonoBehaviour
         get { return damage; }
     }
 
-    private Rigidbody2D rb;                           // Rigidbody2Dコンポーネント
+    private NGHMRigidbody rb;                           // Rigidbody2Dコンポーネント
+    private SpriteCol mySpriteCol;
+    private bool isInit;
+
 
     public void ShotBullet(int damage, float speed, Vector3 direction)
     {
         this.damage = damage;
-        rb = GetComponent<Rigidbody2D>();
-        rb.AddForce(direction * speed, ForceMode2D.Impulse);
+        mySpriteCol = GetComponentInChildren<SpriteCol>();
+        rb = GetComponent<NGHMRigidbody>();
+        rb.Velocity = direction * speed;
+        Destroy(gameObject, 5f);
+
+        //isInit = true;
+    }
+
+    private void Update()
+    {
+        //if (!isInit) return;
+
+        // 地形と当たってるか判定
+        SpriteCol hitCol = mySpriteCol.HitCheck_Ground();
+        if (hitCol)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

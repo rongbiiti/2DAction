@@ -90,11 +90,11 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool ignoreInvincible = false)
     {
         if (HP <= 0) return;
 
-        if (0 < invincibleWaitTime) return;
+        if (0 < invincibleWaitTime && !ignoreInvincible) return;
 
         HP -= damage;
 
@@ -118,14 +118,15 @@ public class PlayerHealth : MonoBehaviour
     {
         GetComponent<PlayerController>().enabled = false;
         GetComponent<PlayerShoot>().enabled = false;
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.velocity = Vector3.zero;
-        rb.isKinematic = true;
-        Collider2D[] colliders = GetComponents<Collider2D>();
-        foreach(var cols in colliders)
-        {
-            cols.enabled = false;
-        }
+        GetComponent<NGHMRigidbody>().enabled = false;
+        //Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        //rb.velocity = Vector3.zero;
+        //rb.isKinematic = true;
+        //Collider2D[] colliders = GetComponents<Collider2D>();
+        //foreach(var cols in colliders)
+        //{
+            //cols.enabled = false;
+        //}
 
         yield return new WaitForSeconds(0.75f);
 
@@ -145,7 +146,7 @@ public class PlayerHealth : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("Lava"))
         {
-            TakeDamage(maxHP);
+            TakeDamage(maxHP, true);
         }
     }
 

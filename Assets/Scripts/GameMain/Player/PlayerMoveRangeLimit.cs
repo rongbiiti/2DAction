@@ -28,7 +28,7 @@ public class PlayerMoveRangeLimit : MonoBehaviour
 
         if(myViewPortPos.y <= -0.1f)
         {
-            GetComponent<PlayerHealth>().TakeDamage(100);
+            GetComponent<PlayerHealth>().TakeDamage(100, true);
         }
     }
 

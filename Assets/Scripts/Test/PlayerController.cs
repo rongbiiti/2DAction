@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb;
+    private NGHMRigidbody rb;
+    [SerializeField] private SpriteCol _mySpriteCol;
+    [SerializeField] private SpriteCol _groundCheckSpriteCol;
+    [SerializeField] private SpriteCol _wallCheckSpriteCol;
+    [SerializeField] private SpriteCol _ceilCheckSpriteCol;
     private Vector2 localScale;
     private float startLocalScaleX;
     private bool isGrounded = true;
+    private bool isCeil = false;
     private bool isJumping = false;
     private bool isJumpingCheck = true;
     private float jumpTimeCounter;
@@ -25,6 +30,7 @@ public class PlayerController : MonoBehaviour
 
     InputManager inputManager;
     PlayerManager playerManager;
+    PlayerHealth playerHealth;
     AnimParamController animParamController;
 
     void Awake()
@@ -33,18 +39,106 @@ public class PlayerController : MonoBehaviour
         localScale = transform.localScale;
         jumpTimeCounter = jumpTime;
         animParamController = GetComponent<AnimParamController>();
+        playerHealth = GetComponent<PlayerHealth>();
     }
 
     void Start()
     {
         playerManager = PlayerManager.Instance;
         inputManager = InputManager.Instance;
+
+        rb = GetComponent<NGHMRigidbody>();
+
+        // nullだったら取得
+        if(_mySpriteCol == null)
+        {
+            _mySpriteCol = GetComponentInChildren<SpriteCol>();
+        }
+
+       
     }
 
     void Update()
     {
-        isGrounded = Physics2D.Linecast(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, platformLayer);
-        Debug.DrawLine(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, Color.red, 0, false);
+        //isGrounded = Physics2D.Linecast(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, platformLayer);
+        //Debug.DrawLine(transform.position - transform.up * 0.1f, transform.position - transform.up * testY, Color.red, 0, false);
+
+        isGrounded = false;
+        isCeil = false;
+
+
+        // 地形と当たってるか判定
+        SpriteCol hitGroundCol = _groundCheckSpriteCol.HitCheck_Ground();
+
+        if (hitGroundCol)
+        {
+            if (hitGroundCol && hitGroundCol.CompareTag("Lava"))
+            {
+                playerHealth.TakeDamage(playerHealth.MaxHP, true);
+            }
+            isGrounded = true;
+        }
+
+        // 天井と当たってるか判定
+        SpriteCol hitCeilCol = _ceilCheckSpriteCol.HitCheck_Ground();
+
+        if(hitCeilCol)
+        {
+            isCeil = true;
+        }
+
+        // 敵の弾と当たってるか判定
+        SpriteCol hitBulletCol = _mySpriteCol.HitCheck_EnemyBullet();
+
+        if (hitBulletCol)
+        {
+            Bullet bullet = hitBulletCol.transform.parent.GetComponent<Bullet>();
+
+            playerHealth.TakeDamage(bullet.Damage);
+
+            Destroy(hitBulletCol.transform.parent.gameObject);
+        }
+
+        // 特殊効果付きの地形とキャラのColが当たってるか判定
+        SpriteCol hitCol = _mySpriteCol.HitCheck_Ground();
+
+        if (hitCol)
+        {
+            if (hitCol.CompareTag("Lava"))
+            {
+                playerHealth.TakeDamage(playerHealth.MaxHP, true);
+            }
+            else if (hitCol.CompareTag("Needle"))
+            {
+                playerHealth.TakeDamage(playerHealth.MaxHP);
+            }
+            
+        }
+
+        // トリガーと当たってるか判定
+        SpriteCol trigger = _mySpriteCol.HitCheck_Trigger();
+
+        if(trigger)
+        {
+            if (trigger.CompareTag("FallZone"))
+            {
+                isFalling = true;
+            }
+            else if (trigger.CompareTag("RestartPoint"))
+            {
+                PlayerRestartPointManager.Instance.RestartPoint = trigger.transform.parent.position;
+                PlayerRestartPointManager.Instance.isUpdateRestartPos = true;
+            }
+            else if (trigger.CompareTag("BossRoomShutter"))
+            {
+                trigger.gameObject.tag = "Untagged";
+                StartCoroutine(EnterBossRoom(trigger.GetComponentInParent<SpriteCol>(), trigger.GetComponentInParent<BossRoomShutter>()));
+                trigger.RemoveColManagerList();
+                trigger.gameObject.layer = 6;
+                trigger.AddColManagerList();
+            }
+        }
+
 
         // アニメーターのパラメーターセット
         animParamController.SetAnimParamBool("Jumping", !isGrounded);
@@ -69,7 +163,7 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded)
         {
-            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.MoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, rb.velocity.y);
+            rb.Velocity = new Vector2(inputManager.MoveKey * (playerManager.MoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, rb.Velocity.y);
 
             if (isJumpingCheck && inputManager.JumpKey != 0)
             {
@@ -88,7 +182,7 @@ public class PlayerController : MonoBehaviour
 
             if (!isJumping)
             {
-                rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, Physics.gravity.y * playerManager.GravityRate);
+                rb.Velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, Physics.gravity.y * playerManager.GravityRate);
             }
         }
 
@@ -97,9 +191,9 @@ public class PlayerController : MonoBehaviour
             jumpTimeCounter -= Time.deltaTime;
 
             _jumpPower -= 0.6f;
-            rb.velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, 1 * _jumpPower);
+            rb.Velocity = new Vector2(inputManager.MoveKey * (playerManager.JumpMoveSpeed + (playerManager.DashSpeed * inputManager.DashKey)) * moveFlag, 1 * _jumpPower);
 
-            if (jumpTimeCounter < 0)
+            if (jumpTimeCounter < 0 || isCeil)
             {
                 isJumping = false;
             }
@@ -112,7 +206,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private IEnumerator EnterBossRoom(BoxCollider2D shutterCol, BossRoomShutter bossRoomShutter)
+    private IEnumerator EnterBossRoom(SpriteCol shutterCol, BossRoomShutter bossRoomShutter)
     {
         float waitTime = 0;
         Vector3 startPos = transform.position;
@@ -161,8 +255,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("BossRoomShutter"))
         {
-            collision.gameObject.tag = "Untagged";
-            StartCoroutine(EnterBossRoom(collision.gameObject.GetComponent<BoxCollider2D>(), collision.gameObject.GetComponent<BossRoomShutter>()) );
+            //collision.gameObject.tag = "Untagged";
+            //StartCoroutine(EnterBossRoom(collision.gameObject.GetComponent<BoxCollider2D>(), collision.gameObject.GetComponent<BossRoomShutter>()) );
         }
     }
 }

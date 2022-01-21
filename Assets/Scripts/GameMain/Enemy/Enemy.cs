@@ -10,6 +10,10 @@ public class Enemy : MonoBehaviour
         Damage
     }
 
+    [SerializeField] private GameObject _diedParticle;
+
+    [SerializeField] private SpriteCol _mySpriteCol;
+
     [SerializeField] private int maxHP = 100;
     public int MaxHP {
         get { return maxHP; }
@@ -57,7 +61,10 @@ public class Enemy : MonoBehaviour
         Rect enemyUpdateScreenLange = new Rect(-200, -200, Screen.width + 200, Screen.height + 200);
 
         // 敵が画面範囲から遠ざかっていたら処理をスキップ
-        if (!enemyUpdateScreenLange.Contains(screenPos)) updateFlag = false;
+        if (!enemyUpdateScreenLange.Contains(screenPos))
+        {
+            updateFlag = false;
+        }
 
         if (!updateFlag) return;
 
@@ -66,7 +73,7 @@ public class Enemy : MonoBehaviour
             if (!lastEnteredLockonLange)
             {
                 cameraLangeEnemyManager._withinCameraLangeEnemies.Add(this);
-                Debug.Log(gameObject.name + "が範囲内に入った");
+                //Debug.Log(gameObject.name + "が範囲内に入った");
             }
             
         }
@@ -75,11 +82,31 @@ public class Enemy : MonoBehaviour
             if (lastEnteredLockonLange)
             {
                 cameraLangeEnemyManager._withinCameraLangeEnemies.Remove(this);
-                Debug.Log(gameObject.name + "が範囲から出た");
+                //Debug.Log(gameObject.name + "が範囲から出た");
             }
             
         }
 
+        // プレイヤーの弾と当たり判定
+        SpriteCol bulletCol = _mySpriteCol.HitCheck_PlayerBullet();
+        if (bulletCol)
+        {
+            Bullet bullet = bulletCol.transform.parent.GetComponent<Bullet>();
+            TakeDamage(bullet.Damage);
+            Destroy(bulletCol.transform.parent.gameObject);
+        }
+
+        // プレイヤーと触れたとき、ダメージを与える敵なら、ダメージを与える
+        if(_conflictType == ConflictType.Damage)
+        {
+            SpriteCol playerCol = _mySpriteCol.HitCheck_Player();
+            if (playerCol)
+            {
+                PlayerHealth playerHealth = playerCol.GetComponentInParent<PlayerHealth>();
+                playerHealth.TakeDamage(_conflictDamage);
+            }
+        }
+        
         lastEnteredLockonLange = isEnteredLockonLange;
         isEnteredLockonLange = false;
     }
@@ -117,6 +144,7 @@ public class Enemy : MonoBehaviour
         {
             HP = 0;
             cameraLangeEnemyManager._withinCameraLangeEnemies.Remove(this);
+            Instantiate(_diedParticle, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
 

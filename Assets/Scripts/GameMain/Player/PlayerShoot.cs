@@ -57,11 +57,11 @@ public class PlayerShoot : MonoBehaviour
 
         if (InputManager.Instance.FireKey != 0 && nextFireWaitTime <= 0)
         {
-            Vector3 vec = transform.right * transform.localScale.x;
+            Vector3 vec = _muzzlePos.right * transform.localScale.x;
 
             if (targetingEnemy != null)
             {
-                vec = (targetingEnemy.transform.position - transform.position).normalized;
+                vec = (targetingEnemy.transform.position - _muzzlePos.position).normalized;
                 // ‘_‚Á‚Ä‚é“G‚ªŽ©•ª‚æ‚è‰E‘¤‚Ì‚Æ‚«
                 if (transform.position.x <= targetingEnemy.transform.position.x)
                 {
@@ -77,7 +77,7 @@ public class PlayerShoot : MonoBehaviour
             GameObject obj = Instantiate(_bulletPrefab, _muzzlePos.position, Quaternion.identity) as GameObject;
             Bullet bulletSc = obj.GetComponent<Bullet>();
             
-            bulletSc.ShotBullet( _bulletDamage, 7f, vec);
+            bulletSc.ShotBullet( _bulletDamage, 10f, vec);
             nextFireWaitTime += _fireRate;
             animParamController.SetAnimParamBool("Shooting", true);
         }

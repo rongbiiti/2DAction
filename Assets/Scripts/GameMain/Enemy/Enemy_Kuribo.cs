@@ -5,15 +5,33 @@ using UnityEngine;
 public class Enemy_Kuribo : Enemy
 {
     // ï‡çsë¨ìx
+    [Space(10f)]
     [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private SpriteCol _wallSpriteCol;
+    private NGHMRigidbody rb;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        rb = GetComponent<NGHMRigidbody>();
+    }
 
     protected override void Update()
     {
         base.Update();
 
+        rb.enabled = updateFlag;
+
         if (!updateFlag) return;
 
-        transform.Translate(new Vector3(-transform.localScale.x, 0, 0) * _moveSpeed);
+        SpriteCol hitWallCol = _wallSpriteCol.HitCheck_Ground();
+        if (hitWallCol)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
+
+        rb.Velocity = new Vector3(-transform.localScale.x * _moveSpeed, rb.Velocity.y);
+
     }
 
     protected override void OnTriggerEnter2D(Collider2D collision)
