@@ -80,6 +80,8 @@ public class PlayerShoot : MonoBehaviour
             bulletSc.ShotBullet( _bulletDamage, 10f, vec);
             nextFireWaitTime += _fireRate;
             animParamController.SetAnimParamBool("Shooting", true);
+
+            SoundManager.Instance.PlaySE(SE.Shot);
         }
         
     }

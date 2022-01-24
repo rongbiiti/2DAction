@@ -94,6 +94,7 @@ public class Enemy : MonoBehaviour
             Bullet bullet = bulletCol.transform.parent.GetComponent<Bullet>();
             TakeDamage(bullet.Damage);
             Destroy(bulletCol.transform.parent.gameObject);
+            SoundManager.Instance.PlaySE(SE.ShotHit);
         }
 
         // プレイヤーと触れたとき、ダメージを与える敵なら、ダメージを与える
@@ -103,7 +104,15 @@ public class Enemy : MonoBehaviour
             if (playerCol)
             {
                 PlayerHealth playerHealth = playerCol.GetComponentInParent<PlayerHealth>();
+
+                // 無敵時間でないときに音再生
+                if (playerHealth.InvincibleWaitTime <= 0 && 0 < playerHealth.HP)
+                {
+                    SoundManager.Instance.PlaySE(SE.Damage);
+                }
+                
                 playerHealth.TakeDamage(_conflictDamage);
+                
             }
         }
         

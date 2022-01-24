@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 localScale;
     private float startLocalScaleX;
     private bool isGrounded = true;
+    private bool lastGrounded = true;
     private bool isCeil = false;
     private bool isJumping = false;
     private bool isJumpingCheck = true;
@@ -75,8 +76,14 @@ public class PlayerController : MonoBehaviour
             if (hitGroundCol && hitGroundCol.CompareTag("Lava"))
             {
                 playerHealth.TakeDamage(playerHealth.MaxHP, true);
+                SoundManager.Instance.PlaySE(SE.MagmaDive);
+                return;
             }
             isGrounded = true;
+            if (!lastGrounded)
+            {
+                SoundManager.Instance.PlaySE(SE.Landing);
+            }
         }
 
         // 天井と当たってるか判定
@@ -85,6 +92,8 @@ public class PlayerController : MonoBehaviour
         if(hitCeilCol)
         {
             isCeil = true;
+            _jumpPower = 0;
+            isJumping = false;
         }
 
         // 敵の弾と当たってるか判定
@@ -97,6 +106,8 @@ public class PlayerController : MonoBehaviour
             playerHealth.TakeDamage(bullet.Damage);
 
             Destroy(hitBulletCol.transform.parent.gameObject);
+
+            SoundManager.Instance.PlaySE(SE.Damage);
         }
 
         // 特殊効果付きの地形とキャラのColが当たってるか判定
@@ -107,10 +118,18 @@ public class PlayerController : MonoBehaviour
             if (hitCol.CompareTag("Lava"))
             {
                 playerHealth.TakeDamage(playerHealth.MaxHP, true);
+                SoundManager.Instance.PlaySE(SE.MagmaDive);
             }
             else if (hitCol.CompareTag("Needle"))
             {
                 playerHealth.TakeDamage(playerHealth.MaxHP);
+
+                // 無敵時間でないときに音再生
+                if(playerHealth.InvincibleWaitTime <= 0)
+                {
+                    SoundManager.Instance.PlaySE(SE.Needle);
+                }
+                
             }
             
         }
@@ -142,6 +161,8 @@ public class PlayerController : MonoBehaviour
 
         // アニメーターのパラメーターセット
         animParamController.SetAnimParamBool("Jumping", !isGrounded);
+
+        lastGrounded = isGrounded;
     }
 
     void FixedUpdate()

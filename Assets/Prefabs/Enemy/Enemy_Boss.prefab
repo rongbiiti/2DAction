@@ -266,9 +266,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828136fe05b07164b8aaad0c5b5970c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _diedParticle: {fileID: 7789829203084629118, guid: 9bb6266e256f4d54f93de41ebfbea049, type: 3}
+  _diedParticle: {fileID: 3073942742771691920, guid: 3582e8583d057c743a403cb093b9393f, type: 3}
   _mySpriteCol: {fileID: 2770078144791510582}
-  maxHP: 10000
+  maxHP: 7500
   _conflictType: 1
   _conflictDamage: 15
   platformLayer:
@@ -496,15 +496,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3161301764356127556, guid: 9e5186d15f36a384083ed90da54acaed, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.69500077
+      value: 0.36883825
       objectReference: {fileID: 0}
     - target: {fileID: 3161301764356127556, guid: 9e5186d15f36a384083ed90da54acaed, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.382
+      value: -0.421
       objectReference: {fileID: 0}
     - target: {fileID: 3161301764356127556, guid: 9e5186d15f36a384083ed90da54acaed, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.2178
+      value: -0.2297
       objectReference: {fileID: 0}
     - target: {fileID: 3161301764356127556, guid: 9e5186d15f36a384083ed90da54acaed, type: 3}
       propertyPath: m_LocalPosition.z

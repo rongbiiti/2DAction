@@ -41,6 +41,28 @@ public class NGHMRigidbody : MonoBehaviour
         // 接地フラグ折る
         isGround = false;
 
+        // 壁に当たったときの押し戻し処理
+        SpriteCol hitWallCol = _wallCheckSpriteCol.HitCheck_Ground();
+
+        if (hitWallCol != null && hitWallCol.IsRigid)
+        {
+            float newX = transform.position.x;
+
+            if (lastVelocity.x < 0)
+            {
+                // 左方向に進んでた時
+                newX = transform.position.x + (hitWallCol.MaxX - _mySpriteCol.MinX);
+            }
+            else if (0 < lastVelocity.x)
+            {
+                // 右方向に進んでた時
+                newX = transform.position.x - (_mySpriteCol.MaxX - hitWallCol.MinX);
+            }
+
+            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
+            velocity.x = 0;
+        }
+
         // 接地判定
         SpriteCol hitGroundCol = _groundCheckSpriteCol.HitCheck_Ground();
 
@@ -81,7 +103,7 @@ public class NGHMRigidbody : MonoBehaviour
         if (0 < velocity.x && _useGravity)
         {
             // 右方向への力残ってたら減らす
-            velocity.x -= 5f * Time.fixedDeltaTime * _gravityRate * (flicFlag * _fliction);
+            velocity.x -= 5f * Time.deltaTime * _gravityRate * (flicFlag * _fliction);
 
             // 減らした後、左方向に力が入ることになっちゃったら0に補正
             if (velocity.x <= 0)
@@ -92,7 +114,7 @@ public class NGHMRigidbody : MonoBehaviour
         else if (velocity.x < 0 && _useGravity)
         {
             // 左方向への力残ってたら減らす
-            velocity.x += 5f * Time.fixedDeltaTime * _gravityRate * (flicFlag * _fliction);
+            velocity.x += 5f * Time.deltaTime * _gravityRate * (flicFlag * _fliction);
 
             // 減らした後、右方向に力が入ることになっちゃったら0に補正
             if (0 <= velocity.x)

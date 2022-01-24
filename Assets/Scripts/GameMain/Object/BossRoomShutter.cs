@@ -27,6 +27,7 @@ public class BossRoomShutter : MonoBehaviour
         for(int i = shutterSprites.Length - 1; i >= 0; i--)
         {
             shutterSprites[i].enabled = false;
+            SoundManager.Instance.PlaySE(SE.Shutter);
             yield return new WaitForSecondsRealtime(0.1f);
         }
 
@@ -37,6 +38,7 @@ public class BossRoomShutter : MonoBehaviour
         for(int i = 0; i < shutterSprites.Length; i++)
         {
             shutterSprites[i].enabled = true;
+            SoundManager.Instance.PlaySE(SE.Shutter);
             yield return new WaitForSecondsRealtime(0.1f);
         }
         _boss.SetActive(true);

@@ -20,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
 
     private float invincibleWaitTime;
     public float InvincibleWaitTime {
+        set { invincibleWaitTime = value; }
         get { return invincibleWaitTime; }
     }
 
@@ -35,6 +36,8 @@ public class PlayerHealth : MonoBehaviour
         get { return hp; }
         set { hp = value; }
     }
+
+    public bool isCleared;
 
     private SpriteRenderer spriteRenderer;
     private AnimParamController animParamController;
@@ -73,6 +76,9 @@ public class PlayerHealth : MonoBehaviour
         
         spriteRenderer = GetComponent<SpriteRenderer>();
         animParamController = GetComponent<AnimParamController>();
+
+        SoundManager.Instance.PlayBGM(BGM.Main, 6.5f);
+        SoundManager.Instance.BGMVolume(0.4f);
     }
 
     private void FixedUpdate()
@@ -92,6 +98,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage, bool ignoreInvincible = false)
     {
+        if (isCleared) return;
+
         if (HP <= 0) return;
 
         if (0 < invincibleWaitTime && !ignoreInvincible) return;
@@ -119,22 +127,36 @@ public class PlayerHealth : MonoBehaviour
         GetComponent<PlayerController>().enabled = false;
         GetComponent<PlayerShoot>().enabled = false;
         GetComponent<NGHMRigidbody>().enabled = false;
+        SoundManager.Instance.StopBGM();
         //Rigidbody2D rb = GetComponent<Rigidbody2D>();
         //rb.velocity = Vector3.zero;
         //rb.isKinematic = true;
         //Collider2D[] colliders = GetComponents<Collider2D>();
         //foreach(var cols in colliders)
         //{
-            //cols.enabled = false;
+        //cols.enabled = false;
         //}
 
         yield return new WaitForSeconds(0.75f);
 
         spriteRenderer.enabled = false;
         Instantiate(_diedEffect, transform.position, Quaternion.identity);
+        SoundManager.Instance.PlaySE(SE.Miss);
 
         yield return new WaitForSeconds(5f);
         PlayerZankiManager.Instance.Zanki--;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GameRestart()
+    {
+        StartCoroutine(nameof(YouWin));
+    }
+
+    private IEnumerator YouWin()
+    {
+        yield return new WaitForSeconds(10f);
+        PlayerZankiManager.Instance.Zanki = -1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

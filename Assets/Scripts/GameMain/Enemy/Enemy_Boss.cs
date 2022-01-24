@@ -54,6 +54,9 @@ public class Enemy_Boss : Enemy
         myHPBar.transform.SetParent(FindObjectOfType<Canvas>().transform, false);
 
         StartCoroutine(nameof(ActionSelect));
+
+        SoundManager.Instance.PlayBGM(BGM.BossBattle);
+        SoundManager.Instance.BGMVolume(0.2f);
     }
 
     protected override void Update()
@@ -69,7 +72,11 @@ public class Enemy_Boss : Enemy
     {
         if(HP <= 0)
         {
+            FindObjectOfType<PlayerHealth>().isCleared = true;
+            FindObjectOfType<PlayerHealth>().GameRestart();
             _clearText.SetActive(true);
+            SoundManager.Instance.StopBGM();
+            SoundManager.Instance.PlaySE(SE.Miss);
         }
         
     }
@@ -166,6 +173,8 @@ public class Enemy_Boss : Enemy
 
         LookPlayer();
 
+        SoundManager.Instance.PlaySE(SE.BossCharge, 1.3f);
+
         yield return new WaitForSeconds(0.75f);
 
         // 撃つ瞬間3分の1で真上にジャンプする
@@ -174,6 +183,7 @@ public class Enemy_Boss : Enemy
         {
             //rb.Velocity = new Vector2(0, 1.8f) * 4f;
             rb.AddForce(new Vector2(0, 8.5f));
+            SoundManager.Instance.PlaySE(SE.BossJump, 1.3f);
         }
 
         yield return new WaitForSeconds(0.3f);
@@ -189,6 +199,8 @@ public class Enemy_Boss : Enemy
         }
 
         _animator.SetBool("RoundFire", true);
+
+        SoundManager.Instance.PlaySE(SE.BossShot2, 1.3f);
 
         yield return new WaitForSeconds(2f);
 
@@ -211,6 +223,8 @@ public class Enemy_Boss : Enemy
 
         LookPlayer();
 
+        SoundManager.Instance.PlaySE(SE.BossAiming, 1.3f);
+
         yield return new WaitForSeconds(1f);
 
         _animator.SetBool("Shooting", true);
@@ -226,6 +240,8 @@ public class Enemy_Boss : Enemy
             Bullet bulletSc = obj.GetComponent<Bullet>();
 
             bulletSc.ShotBullet(_bulletDamage[0], 12f, vec);
+
+            SoundManager.Instance.PlaySE(SE.BossShot1, 1.3f);
 
             yield return new WaitForSeconds(fireRate);
         }
@@ -255,8 +271,12 @@ public class Enemy_Boss : Enemy
         //rb.Velocity = new Vector2(vec.x, 1.6f) * 4f;
         rb.AddForce(new Vector2(vec.x * 4.5f, 8f));
 
-        yield return new WaitForSeconds(0.5f);
+        SoundManager.Instance.PlaySE(SE.BossJump, 1.3f);
 
+        // 0.1秒置いてから
+        yield return new WaitForSeconds(0.1f);
+
+        // 接地判定
         SpriteCol hitCol = _groundSpriteCol.HitCheck_Ground();
 
         while (!hitCol)
@@ -272,13 +292,17 @@ public class Enemy_Boss : Enemy
         // ベロシティ0にする
         rb.Velocity = Vector3.zero;
 
+        yield return new WaitForSeconds(0.08f);
+
         // もっかい飛ぶ
         vec = -transform.right * transform.localScale.x;
         //rb.Velocity = new Vector2(vec.x, 1.8f) * 3.5f;
         rb.AddForce(new Vector2(vec.x * 5.5f, 6f));
 
-        // 0.5秒置いてから
-        yield return new WaitForSeconds(0.5f);
+        SoundManager.Instance.PlaySE(SE.BossJump, 1.3f);
+
+        // 0.1秒置いてから
+        yield return new WaitForSeconds(0.1f);
 
         // 接地判定
         hitCol = _groundSpriteCol.HitCheck_Ground();
@@ -290,6 +314,7 @@ public class Enemy_Boss : Enemy
             yield return null;
         }
 
+        // ベロシティ0にする
         rb.Velocity = Vector3.zero;
         _animator.SetBool("RoundFire", false);
 

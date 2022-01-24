@@ -27,6 +27,12 @@ public class Enemy_Kuribo : Enemy
         SpriteCol hitWallCol = _wallSpriteCol.HitCheck_Ground();
         if (hitWallCol)
         {
+            if (hitWallCol.CompareTag("Lava"))
+            {
+                TakeDamage(MaxHP);
+                SoundManager.Instance.PlaySE(SE.MagmaDive);
+                return;
+            }
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
 

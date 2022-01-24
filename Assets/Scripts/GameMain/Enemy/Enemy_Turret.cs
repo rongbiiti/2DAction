@@ -32,6 +32,7 @@ public class Enemy_Turret : Enemy
 
             bulletSc.ShotBullet(_bulletDamage, 3.5f, vec);
             nextFireWaitTime += _fireRate;
+            SoundManager.Instance.PlaySE(SE.EnemyShot);
         }
         
     }
