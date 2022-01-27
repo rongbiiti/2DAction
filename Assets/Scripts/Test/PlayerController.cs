@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public bool _startBossBattle;
     private NGHMRigidbody rb;
     [SerializeField] private SpriteCol _mySpriteCol;
     [SerializeField] private SpriteCol _groundCheckSpriteCol;
@@ -56,7 +57,11 @@ public class PlayerController : MonoBehaviour
             _mySpriteCol = GetComponentInChildren<SpriteCol>();
         }
 
-       
+        if (_startBossBattle)
+        {
+            transform.position = new Vector3(151.83f, -41.38f, 0);
+            Camera.main.transform.position = new Vector3(151.83f, -40.38f, -10f);
+        }
     }
 
     void Update()

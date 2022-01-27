@@ -26,7 +26,8 @@ public class Enemy_Boss : Enemy
     // 地面SpriteCol
     [SerializeField] private SpriteCol _groundSpriteCol;
 
-    [SerializeField] private GameObject _clearText;
+    // ゲームクリア演出オブジェクト
+    [SerializeField] private GameClearEvent _gameClearEvent;
 
     Dictionary<int, string> actionInfo;
     Dictionary<int, float> actionDict;
@@ -72,11 +73,11 @@ public class Enemy_Boss : Enemy
     {
         if(HP <= 0)
         {
-            FindObjectOfType<PlayerHealth>().isCleared = true;
-            FindObjectOfType<PlayerHealth>().GameRestart();
-            _clearText.SetActive(true);
             SoundManager.Instance.StopBGM();
             SoundManager.Instance.PlaySE(SE.Miss);
+
+            // ゲームクリア演出起動
+            _gameClearEvent.EventStart();
         }
         
     }
@@ -177,9 +178,9 @@ public class Enemy_Boss : Enemy
 
         yield return new WaitForSeconds(0.75f);
 
-        // 撃つ瞬間3分の1で真上にジャンプする
-        float randomPoint = Random.value * 100f;
-        if (randomPoint < 33f)
+        // HP半分以下で真上にジャンプする
+        float hpPercent = (float)HP / MaxHP * 100f;
+        if (hpPercent < 50f)
         {
             //rb.Velocity = new Vector2(0, 1.8f) * 4f;
             rb.AddForce(new Vector2(0, 8.5f));

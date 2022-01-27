@@ -150,14 +150,8 @@ public class PlayerHealth : MonoBehaviour
 
     public void GameRestart()
     {
-        StartCoroutine(nameof(YouWin));
-    }
-
-    private IEnumerator YouWin()
-    {
-        yield return new WaitForSeconds(10f);
         PlayerZankiManager.Instance.Zanki = -1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(0);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

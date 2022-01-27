@@ -172,6 +172,35 @@ public class NGHMRigidbody : MonoBehaviour
             velocity.x = 0;
         }
 
+        // 接地判定
+        SpriteCol hitGroundCol = _groundCheckSpriteCol.HitCheck_Ground();
+
+        // 地面と当たってたら押し戻し処理
+        // 剛体じゃなかったら押し戻しはしない
+        if (hitGroundCol != null && hitGroundCol.IsRigid)
+        {
+            float newY = transform.position.y + (hitGroundCol.MaxY - _mySpriteCol.MinY);
+            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+            
+
+            isGround = true;
+        }
+
+        // 天井判定
+        SpriteCol hitCeilCol = _ceilCheckSpriteCol.HitCheck_Ground();
+
+        if (hitCeilCol != null && hitCeilCol.IsRigid)
+        {
+            float newY = transform.position.y - (_mySpriteCol.MaxY - hitCeilCol.MinY);
+            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+            // 天井と当たったとき上昇する力が入ってたら0にする
+            if (0 < velocity.y)
+            {
+                velocity.y = 0;
+            }
+        }
+
         transform.position += velocity * Time.deltaTime;
 
         // この更新時のVelocity覚えておく

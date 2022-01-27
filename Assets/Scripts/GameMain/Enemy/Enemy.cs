@@ -49,6 +49,13 @@ public class Enemy : MonoBehaviour
         {
             mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         }
+
+        // ステージ開始時自分のX座標がプレイヤーより左なら非アクティブにする
+        Transform playerTrans = GameObject.FindGameObjectWithTag("Player").transform;
+        if(transform.position.x < playerTrans.position.x)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     virtual protected void Update()
@@ -187,4 +194,6 @@ public class Enemy : MonoBehaviour
             TakeDamage(bullet.Damage);
         }
     }
+
+    
 }

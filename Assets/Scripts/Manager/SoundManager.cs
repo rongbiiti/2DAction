@@ -32,6 +32,9 @@ public enum SE
     MagmaDive,      // マグマで死
     Needle,         // 針で死
 
+    Victory,        // クリア
+    StageStart,     // ステージスタート
+
     Max
 }
 
