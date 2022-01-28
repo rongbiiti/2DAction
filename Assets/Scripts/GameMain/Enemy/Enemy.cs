@@ -4,46 +4,63 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    // プレイヤーと衝突したときにダメージを与えるか
     private enum ConflictType
     {
         None,
         Damage
     }
 
+    // 敵撃破時エフェクト
     [SerializeField] private GameObject _diedParticle;
 
+    // SpriteCol
     [SerializeField] private SpriteCol _mySpriteCol;
 
+    // 最大HP
     [SerializeField] private int maxHP = 100;
     public int MaxHP {
         get { return maxHP; }
         set { maxHP = value; }
     }
 
+    // 現在HP
     private int hp = 100;
     public int HP {
         get { return hp; }
         set { hp = value; }
     }
 
+    // 衝突タイプ
     [SerializeField] private ConflictType _conflictType = ConflictType.Damage;
 
+    // プレイヤーに衝突したときに与えるダメージ
     [SerializeField] private int _conflictDamage = 5;
 
+    // ロックオン範囲に入っているか
     private bool isEnteredLockonLange;
+
+    // 前のフレームでロックオン範囲に入っていたか
     private bool lastEnteredLockonLange;
 
+    // カメラ描画範囲に入っている敵を管理するマネージャー
     private WithinCameraLangeEnemyManager cameraLangeEnemyManager;
+
+    // メインカメラ
     protected Camera mainCamera;
+
+    // 更新処理してもいいか
     protected bool updateFlag;
 
     virtual protected void Awake()
     {
+        // HPを初期化
         hp = maxHP;
     }
 
     virtual protected void Start()
     {
+        // インスタンス取得
         cameraLangeEnemyManager = WithinCameraLangeEnemyManager.Instance;
         if (mainCamera == null)
         {
@@ -62,10 +79,12 @@ public class Enemy : MonoBehaviour
     {
         updateFlag = true;
 
+        // HP0以下なら更新しない
         if (HP <= 0) updateFlag = false;
 
+        // スクリーン座標取得
         Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
-        Rect enemyUpdateScreenLange = new Rect(-200, -200, Screen.width + 200, Screen.height + 200);
+        Rect enemyUpdateScreenLange = new Rect(-200, -200, Screen.width + 400, Screen.height + 400);
 
         // 敵が画面範囲から遠ざかっていたら処理をスキップ
         if (!enemyUpdateScreenLange.Contains(screenPos))
@@ -79,8 +98,9 @@ public class Enemy : MonoBehaviour
         {
             if (!lastEnteredLockonLange)
             {
+                // 前のフレームでロックオン範囲に入っておらず、
+                // 今のフレームで範囲に入ってたらロックオン可能リストに加える
                 cameraLangeEnemyManager._withinCameraLangeEnemies.Add(this);
-                //Debug.Log(gameObject.name + "が範囲内に入った");
             }
             
         }
@@ -88,8 +108,8 @@ public class Enemy : MonoBehaviour
         {
             if (lastEnteredLockonLange)
             {
+                // ロックオン範囲から出たらロックオン可能リストから削除
                 cameraLangeEnemyManager._withinCameraLangeEnemies.Remove(this);
-                //Debug.Log(gameObject.name + "が範囲から出た");
             }
             
         }
@@ -98,13 +118,17 @@ public class Enemy : MonoBehaviour
         SpriteCol bulletCol = _mySpriteCol.HitCheck_PlayerBullet();
         if (bulletCol)
         {
+            // 弾のコンポーネント取得
             Bullet bullet = bulletCol.transform.parent.GetComponent<Bullet>();
+            // ダメージ受ける
             TakeDamage(bullet.Damage);
+            // 弾を破壊
             Destroy(bulletCol.transform.parent.gameObject);
+            // 弾ヒットSE再生
             SoundManager.Instance.PlaySE(SE.ShotHit);
         }
 
-        // プレイヤーと触れたとき、ダメージを与える敵なら、ダメージを与える
+        // プレイヤーと衝突したとき、ダメージを与える敵ならダメージを与える
         if(_conflictType == ConflictType.Damage)
         {
             SpriteCol playerCol = _mySpriteCol.HitCheck_Player();
@@ -117,12 +141,13 @@ public class Enemy : MonoBehaviour
                 {
                     SoundManager.Instance.PlaySE(SE.Damage);
                 }
-                
+                // プレイヤーにダメージ
                 playerHealth.TakeDamage(_conflictDamage);
                 
             }
         }
         
+        // 今フレームでロックオン範囲に入ってるか記憶
         lastEnteredLockonLange = isEnteredLockonLange;
         isEnteredLockonLange = false;
     }
@@ -150,17 +175,22 @@ public class Enemy : MonoBehaviour
         
     }
 
+    // ダメージを受ける
     public void TakeDamage(int damage)
     {
         if (HP <= 0) return;
 
         HP -= damage;
 
+        // 撃破時
         if (HP <= 0)
         {
             HP = 0;
+            // ロックオン可能リストから削除
             cameraLangeEnemyManager._withinCameraLangeEnemies.Remove(this);
+            // 撃破時エフェクト出す
             Instantiate(_diedParticle, transform.position, Quaternion.identity);
+            // 自分デストロイ
             Destroy(gameObject);
         }
 

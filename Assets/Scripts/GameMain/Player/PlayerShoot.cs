@@ -19,10 +19,15 @@ public class PlayerShoot : MonoBehaviour
     // ファイアレート
     [SerializeField] private float _fireRate = 0.2f;
 
+    // 次の発射までのクールダウン
     private float nextFireWaitTime;
+    // ロックオン可能リスト管理マネージャー
     private WithinCameraLangeEnemyManager cameraLangeEnemyManager;
+    // アニメーションパラメーターコントローラー
     private AnimParamController animParamController;
+    // 狙ってる敵
     private Enemy targetingEnemy;
+    // 開始時のScale.x（横幅）
     private float startLocalScaleX;
 
     private void Awake()
@@ -42,38 +47,46 @@ public class PlayerShoot : MonoBehaviour
 
     void Update()
     {
+        // 一番近くにいるロックオン可能な敵を取得
         targetingEnemy = cameraLangeEnemyManager.GetNearestEnemy(transform.position);
 
         if (targetingEnemy != null)
         {
+            // 敵がいたらロックオンカーソル表示
             _lockonCursor.SetImageEnabled(true, targetingEnemy.transform);
-
         }
         else
         {
+            // いなかったら非表示
             _lockonCursor.SetImageEnabled(false, null);
-
         }
 
+        // 発射ボタン押したとき、発射クールダウン終わってたら
         if (InputManager.Instance.FireKey != 0 && nextFireWaitTime <= 0)
         {
+            // 向いてる方向のベクトル
             Vector3 vec = _muzzlePos.right * transform.localScale.x;
 
             if (targetingEnemy != null)
             {
+                // 銃口から敵までの方向ベクトル作成
                 vec = (targetingEnemy.transform.position - _muzzlePos.position).normalized;
+
                 // 狙ってる敵が自分より右側のとき
                 if (transform.position.x <= targetingEnemy.transform.position.x)
                 {
+                    // 右向く
                     transform.localScale = new Vector3(startLocalScaleX, transform.localScale.y, transform.localScale.z);
                 }
                 // 自分より左側のとき
                 else
                 {
+                    // 左向く
                     transform.localScale = new Vector3(-startLocalScaleX, transform.localScale.y, transform.localScale.z);
                 }
             }
 
+            // 弾発射
             GameObject obj = Instantiate(_bulletPrefab, _muzzlePos.position, Quaternion.identity) as GameObject;
             Bullet bulletSc = obj.GetComponent<Bullet>();
             

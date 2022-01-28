@@ -232,6 +232,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    // ƒ{ƒX•”‰®“üºˆ—
     private IEnumerator EnterBossRoom(SpriteCol shutterCol, BossRoomShutter bossRoomShutter)
     {
         float waitTime = 0;

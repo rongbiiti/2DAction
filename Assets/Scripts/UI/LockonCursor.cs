@@ -39,8 +39,6 @@ public class LockonCursor : MonoBehaviour
         }
     }
 
-    
-
     void Update()
     {
         if(lockonEnemy != null)

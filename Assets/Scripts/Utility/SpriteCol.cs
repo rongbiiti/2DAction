@@ -72,7 +72,6 @@ public class SpriteCol : MonoBehaviour
 
     void Start()
     {
-        //AddColManagerList();
         if (gameObject.CompareTag("Ground"))
         {
             AddColManagerList();
@@ -93,7 +92,6 @@ public class SpriteCol : MonoBehaviour
             if (!lastRendered)
             {
                 AddColManagerList();
-                //spr.color = Color.yellow;
             }
         }
         else
@@ -108,14 +106,6 @@ public class SpriteCol : MonoBehaviour
         lastRendered = isRendered;
         isRendered = false;
     }
-
-
-
-    private void FixedUpdate()
-    {
-        
-    }
-
 
 
     /// <summary>

@@ -18,6 +18,7 @@ public class GameClearEvent : MonoBehaviour
         _playerHealth.isCleared = true;
         yield return new WaitForSeconds(1.5f);
 
+        // Clear!のテキスト表示
         _clearText.SetActive(true);
         SoundManager.Instance.PlaySE(SE.Victory);
         yield return new WaitForSeconds(6.5f);

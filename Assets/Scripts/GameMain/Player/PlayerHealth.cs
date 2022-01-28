@@ -18,6 +18,7 @@ public class PlayerHealth : MonoBehaviour
     // 無敵時間
     [SerializeField] private float _invincibleTime = 3f;
 
+    // 無敵時間
     private float invincibleWaitTime;
     public float InvincibleWaitTime {
         set { invincibleWaitTime = value; }
@@ -31,12 +32,14 @@ public class PlayerHealth : MonoBehaviour
         set { maxHP = value; }
     }
 
+    // 現在HP
     private int hp = 100;
     public int HP {
         get { return hp; }
         set { hp = value; }
     }
 
+    // ゲームクリアしたか
     public bool isCleared;
 
     private SpriteRenderer spriteRenderer;
@@ -44,29 +47,33 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
+        // HP初期化
         hp = maxHP;
     }
 
     private void Start()
     {
+        // 残機が0未満ならステージの最初からリスタート
         if(PlayerZankiManager.Instance.Zanki < 0)
         {
             PlayerZankiManager.Instance.ZankiReset();
             PlayerRestartPointManager.Instance.isUpdateRestartPos = false;
         }
 
+        // 残機UIに残機数反映
         _zanki_UI.text = PlayerZankiManager.Instance.Zanki.ToString("D2");
 
         // 一度もリスタートポイント通ってなかったら初期位置上書き
         if (!PlayerRestartPointManager.Instance.isUpdateRestartPos)
         {
             PlayerRestartPointManager.Instance.RestartPoint = transform.position;
-            
         }
         else
         {
             // リスタートポイント通ってたらそこから復帰
             transform.position = PlayerRestartPointManager.Instance.RestartPoint;
+
+            // カメラ位置も調整
             CameraController cameraController = FindObjectOfType<CameraController>();
             Vector3 cameraPos = cameraController.Camera.WorldToViewportPoint(transform.position);
             cameraPos.y += 0.3f;
@@ -83,12 +90,14 @@ public class PlayerHealth : MonoBehaviour
 
     private void FixedUpdate()
     {
+        // 無敵時間中はプレイヤーを点滅させる
         if(0 < invincibleWaitTime)
         {
             float level = Mathf.Abs(Mathf.Sin(Time.time * 10));
             spriteRenderer.color = new Color(1f, 1f, 1f, level);
             invincibleWaitTime -= Time.deltaTime;
 
+            // 無敵時間終わったら元に戻す
             if(invincibleWaitTime <= 0)
             {
                 spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
@@ -96,13 +105,14 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
+    // ダメージを受ける
     public void TakeDamage(int damage, bool ignoreInvincible = false)
     {
-        if (isCleared) return;
+        if (isCleared) return;  // クリアしてたらダメージ無視
 
-        if (HP <= 0) return;
+        if (HP <= 0) return;    // HP0以下にさせない
 
-        if (0 < invincibleWaitTime && !ignoreInvincible) return;
+        if (0 < invincibleWaitTime && !ignoreInvincible) return;    // 無敵時間中かつ無敵時間無視攻撃でなければ早期リターン
 
         HP -= damage;
 
@@ -122,12 +132,12 @@ public class PlayerHealth : MonoBehaviour
 
     }
 
+    // プレイヤー死亡時処理
     private IEnumerator DiedEffect()
     {
-        GetComponent<PlayerController>().enabled = false;
+        GetComponent<PlayerController>().enabled = false;   // 操作停止
         GetComponent<PlayerShoot>().enabled = false;
-        GetComponent<NGHMRigidbody>().enabled = false;
-        SoundManager.Instance.StopBGM();
+        GetComponent<NGHMRigidbody>().enabled = false;      // 重力停止
         //Rigidbody2D rb = GetComponent<Rigidbody2D>();
         //rb.velocity = Vector3.zero;
         //rb.isKinematic = true;
@@ -136,18 +146,22 @@ public class PlayerHealth : MonoBehaviour
         //{
         //cols.enabled = false;
         //}
+        SoundManager.Instance.StopBGM();
 
         yield return new WaitForSeconds(0.75f);
 
-        spriteRenderer.enabled = false;
-        Instantiate(_diedEffect, transform.position, Quaternion.identity);
+        spriteRenderer.enabled = false;     // スプライト非表示
+        Instantiate(_diedEffect, transform.position, Quaternion.identity);  // 死亡時エフェクト出す
         SoundManager.Instance.PlaySE(SE.Miss);
 
         yield return new WaitForSeconds(5f);
+
+        // 残機減らしてリスタートポイントから復活
         PlayerZankiManager.Instance.Zanki--;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
+    // ゲームクリア後、最初のシーンからリスタート
     public void GameRestart()
     {
         PlayerZankiManager.Instance.Zanki = -1;

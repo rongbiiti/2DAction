@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    // 弾のダメージ
     private int damage;
     public int Damage {
         get { return damage; }
     }
 
-    private NGHMRigidbody rb;                           // Rigidbody2Dコンポーネント
+    private NGHMRigidbody rb;
     private SpriteCol mySpriteCol;
-    private bool isInit;
 
-
+    /// <summary>
+    /// 弾のパラメーター設定して発射
+    /// </summary>
+    /// <param name="damage">与ダメージ</param>
+    /// <param name="speed">速度</param>
+    /// <param name="direction">発射方向</param>
     public void ShotBullet(int damage, float speed, Vector3 direction)
     {
         this.damage = damage;
@@ -21,14 +26,10 @@ public class Bullet : MonoBehaviour
         rb = GetComponent<NGHMRigidbody>();
         rb.Velocity = direction * speed;
         Destroy(gameObject, 5f);
-
-        //isInit = true;
     }
 
     private void Update()
     {
-        //if (!isInit) return;
-
         // 地形と当たってるか判定
         SpriteCol hitCol = mySpriteCol.HitCheck_Ground();
         if (hitCol)
@@ -39,7 +40,6 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
         Destroy(gameObject);
     }
 }

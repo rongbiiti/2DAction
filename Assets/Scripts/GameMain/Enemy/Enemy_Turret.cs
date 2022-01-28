@@ -24,6 +24,7 @@ public class Enemy_Turret : Enemy
 
         if (!updateFlag) return;
 
+        // ’e”­ŽË
         if (nextFireWaitTime <= 0)
         {
             Vector3 vec = -transform.right * transform.localScale.x;

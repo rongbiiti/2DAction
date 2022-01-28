@@ -38,8 +38,10 @@ public class Enemy_FuwaTurret : Enemy
 
         if (!updateFlag) return;
 
+        // è„â∫Ç…óhÇÍÇÈ
         transform.position = new Vector3(startPosition.x, (Mathf.Sin((Time.time) * _floatingSpeedY) * _floatingRangeY + startPosition.y), startPosition.z);
 
+        // íeî≠éÀ
         if (nextFireWaitTime <= 0)
         {
             Vector3 vec = -transform.right * transform.localScale.x;

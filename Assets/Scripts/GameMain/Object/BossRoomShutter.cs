@@ -24,24 +24,38 @@ public class BossRoomShutter : MonoBehaviour
 
     private IEnumerator ShutterOffCoroutine()
     {
+        int seCount = 0;
+
         for(int i = shutterSprites.Length - 1; i >= 0; i--)
         {
             shutterSprites[i].enabled = false;
-            SoundManager.Instance.PlaySE(SE.Shutter);
+
+            if(seCount < 2)
+            {
+                SoundManager.Instance.PlaySE(SE.Shutter);
+                seCount++;
+            }
+            
             yield return new WaitForSecondsRealtime(0.1f);
         }
-
     }
 
     private IEnumerator ShutterOnCoroutine()
     {
-        for(int i = 0; i < shutterSprites.Length; i++)
+        int seCount = 0;
+
+        for (int i = 0; i < shutterSprites.Length; i++)
         {
             shutterSprites[i].enabled = true;
-            SoundManager.Instance.PlaySE(SE.Shutter);
+
+            if (seCount < 2)
+            {
+                SoundManager.Instance.PlaySE(SE.Shutter);
+                seCount++;
+            }
+
             yield return new WaitForSecondsRealtime(0.1f);
         }
         _boss.SetActive(true);
-        //FindObjectOfType<Enemy_Boss>().gameObject.SetActive(true);
     }
 }

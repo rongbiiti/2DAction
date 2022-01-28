@@ -14,6 +14,7 @@ public class WithinCameraLangeEnemyManager : SingletonMonoBehaviour<WithinCamera
     private Transform playerTransform;
     private Vector2 lockonLangeHalf;
 
+    // ロックオン範囲のRectangle
     private Rect lockonLangeRect = new Rect(0.5f, 0.5f, 0.7f, 0.8f);
     public Rect LockonLangeRect {
         get { return lockonLangeRect; }
@@ -63,6 +64,7 @@ public class WithinCameraLangeEnemyManager : SingletonMonoBehaviour<WithinCamera
             return returnEnemy;
         }
 
+        // ロックオン可能な敵の中で一番プレイヤーと近い敵を探す
         float minDistance = (pos - _withinCameraLangeEnemies[0].transform.position).magnitude;
 
         for (int i = 1; i < _withinCameraLangeEnemies.Count; i++)

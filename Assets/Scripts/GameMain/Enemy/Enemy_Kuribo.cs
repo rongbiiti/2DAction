@@ -7,6 +7,8 @@ public class Enemy_Kuribo : Enemy
     // 歩行速度
     [Space(10f)]
     [SerializeField] private float _moveSpeed = 5f;
+
+    // 壁接触判定SpriteCol
     [SerializeField] private SpriteCol _wallSpriteCol;
     private NGHMRigidbody rb;
 
@@ -20,6 +22,7 @@ public class Enemy_Kuribo : Enemy
     {
         base.Update();
 
+        // 更新できないときはRigidBodyも止める
         rb.enabled = updateFlag;
 
         if (!updateFlag) return;
@@ -27,12 +30,15 @@ public class Enemy_Kuribo : Enemy
         SpriteCol hitWallCol = _wallSpriteCol.HitCheck_Ground();
         if (hitWallCol)
         {
+            // 溶岩と当たったらダメージ受ける
             if (hitWallCol.CompareTag("Lava"))
             {
                 TakeDamage(MaxHP);
                 SoundManager.Instance.PlaySE(SE.MagmaDive);
                 return;
             }
+
+            // 壁と当たったら向き反転
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
 
